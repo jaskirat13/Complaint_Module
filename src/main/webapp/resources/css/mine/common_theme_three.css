@@ -1,0 +1,42 @@
+
+.content {
+	height: 86%;
+	overflow: auto;
+	background: #CAFBFC;
+}
+
+.gradeC {
+	background: #F3FEFE;
+}
+
+.gradeX {
+	background: #E7FFFF;
+}
+
+#wrapper nav {
+	background: #CCFDFF;
+}
+
+table thead tr {
+	background: #D8FEFF;
+}
+
+.Myfooter{
+		background: #CCFDFF;
+}
+/* menu color start here */
+
+
+
+.sidebar ul li a.active {
+    background-color:#BAE7E8;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+
+    background-color: #BAE7E8;
+}
+/* menu color end here */
+
+
+

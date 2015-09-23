@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.2.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	
+	
+	<!-- jasper report configuration start -->
+	<beans:import resource="jasper-view.xml"/>
+	<!-- jasper report configuratoin ends -->
+	
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- <annotation-driven /> -->	
+	
+	
+	<annotation-driven>
+    <message-converters>
+        <beans:bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+        <beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+    </message-converters>
+</annotation-driven>
+
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- <tx:jta-transaction-manager ></tx:jta-transaction-manager>  -->
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		
+	</beans:bean>
+	
+	<!-- jasper xml view resolver start -->
+	<beans:bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <beans:property name="location" value="/WEB-INF/spring/appServlet/jasper-view.xml"/>
+        <beans:property name="order" value="0"/>
+    </beans:bean>  
+	<!-- jasper xml view resolver end -->
+	
+	
+	<context:component-scan base-package="com.iitms.cms" />
+	
+	<!-- <context:property-placeholder location=""/> -->
+	
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName" value="org.postgresql.Driver" />
+		<beans:property name="url" value="jdbc:postgresql://localhost:5433/CMS" />
+		<beans:property name="username" value="postgres" />	
+		<beans:property name="password" value="root"/>
+	</beans:bean>
+	
+	<beans:bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		 <beans:property name="packagesToScan" >
+		 	<beans:list>
+		 		<beans:value>com.iitms.cms.masters</beans:value>
+		 		<beans:value>com.iitms.cms.transactions.entity</beans:value>
+		 		<beans:value>com.iitms.cms.transactions.entity</beans:value>
+		 	</beans:list>
+		 </beans:property> 
+		  <beans:property name="mappingResources" value="hibernate-cfg.xml" />  
+		 <beans:property name="hibernateProperties">  
+            <beans:props>  
+                <beans:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</beans:prop>  
+                <!-- <prop key="hibernate.hbm2ddl.auto">update</prop>  --> 
+                <beans:prop key="hibernate.show_sql">true</beans:prop>  
+                  
+            </beans:props>  
+        </beans:property>  
+        
+        <!-- <beans:property name="annotatedPackages" value="com.iitms.hib.entity" /> -->
+	</beans:bean>
+	
+	<beans:bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="sessionFactory" />
+		
+	</beans:bean>
+	
+	 <!-- Tiles configuration -->
+ 
+      <beans:bean id="tilesConfigurer"   class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+          <beans:property name="definitions">
+            <beans:list>
+                <beans:value>/WEB-INF/tiles.xml</beans:value>
+            </beans:list>
+         </beans:property>
+    </beans:bean>
+    
+  
+	
+</beans:beans>
