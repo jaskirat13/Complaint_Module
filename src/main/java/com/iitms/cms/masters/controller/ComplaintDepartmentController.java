@@ -20,6 +20,7 @@ import com.iitms.cms.masters.service.ComplaintDepartmentService;
 //@RequestMapping(value = "/complaint-department")
 public class ComplaintDepartmentController {
 
+	private String a=null;
 	private static final Logger logger = LoggerFactory.getLogger(ComplaintDepartmentController.class);
 	
 	@Autowired
